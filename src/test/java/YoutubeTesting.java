@@ -33,23 +33,20 @@ public class YoutubeTesting {
 
 
     @Test
-    public void testLoginWiki() {
+    public void testLoginYouTube() {
         webDriver.get("https://youtube.com");
         webDriver.manage().window().maximize();
+
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((loginField))).click();
         webDriver.findElement(usernameField).sendKeys("autiteszti");
-        WebElement textbox = webDriver.findElement(usernameField);
-        textbox.sendKeys(Keys.ENTER);
+        webDriver.findElement(usernameField).sendKeys(Keys.ENTER);
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123");
-        WebElement textbox2 = webDriver.findElement(passwordField);
-        textbox2.sendKeys(Keys.ENTER);
-
+        webDriver.findElement(passwordField).sendKeys(Keys.ENTER);
 
 
     }
 
-    // //*[@id="identifierId"]
 
 }

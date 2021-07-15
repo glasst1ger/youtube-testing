@@ -1,6 +1,4 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +18,6 @@ public class YoutubeTesting {
         return new WebDriverWait(webDriver, 10);
     }
 
-
     @BeforeAll
     static void setDriverProperty() {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
@@ -31,8 +28,8 @@ public class YoutubeTesting {
         webDriver = new ChromeDriver();
     }
 
-
     @Test
+    @Order(1)
     public void testLoginYouTube() {
         webDriver.get("https://youtube.com");
         webDriver.manage().window().maximize();
@@ -44,9 +41,42 @@ public class YoutubeTesting {
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123");
         webDriver.findElement(passwordField).sendKeys(Keys.ENTER);
-
-
     }
 
+    @Test
+    @Order(2)
+    public void testChannel_Subscribe(){
+        testLoginYouTube();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search")));
+        WebElement searchInput = webDriver.findElement(By.id("search"));
+        searchInput.sendKeys("codecool");
+        searchInput.sendKeys(Keys.ENTER);
 
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")));
+        webDriver.findElement(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")).click();
+    }
+
+    @Test
+    @Order(3)
+    public void testChannel_UNSubscribe(){
+        testLoginYouTube();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search")));
+        WebElement searchInput = webDriver.findElement(By.id("search"));
+        searchInput.sendKeys("codecool");
+        searchInput.sendKeys(Keys.ENTER);
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")));
+        webDriver.findElement(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")).click();
+        //getWebDriverWait().until(ExpectedConditions.visibilityOf(webDriver.findElement(By.xpath("//*[@id=\"button\"]"))));
+        //webDriver.findElement(By.xpath("//*[@id=\"button\"]")).click();
+
+        getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"confirm-button\"]")));
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"confirm-button\"]")));
+        webDriver.findElement(By.xpath("//*[@id=\"confirm-button\"]")).click();
+    }
+
+    @AfterEach
+    public void closeWebdriver(){
+        webDriver.close();
+    }
 }

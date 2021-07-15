@@ -67,8 +67,6 @@ public class YoutubeTesting {
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")));
         webDriver.findElement(By.cssSelector("#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button")).click();
-        //getWebDriverWait().until(ExpectedConditions.visibilityOf(webDriver.findElement(By.xpath("//*[@id=\"button\"]"))));
-        //webDriver.findElement(By.xpath("//*[@id=\"button\"]")).click();
 
         getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"confirm-button\"]")));
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"confirm-button\"]")));

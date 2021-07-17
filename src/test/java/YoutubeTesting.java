@@ -50,55 +50,73 @@ public class YoutubeTesting {
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((loginField))).click();
         webDriver.findElement(usernameField).sendKeys("autiteszti" + Keys.ENTER);
-        // webDriver.findElement(usernameField).sendKeys(Keys.ENTER);
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123" + Keys.ENTER);
-        //webDriver.findElement(passwordField).sendKeys(Keys.ENTER);
-
 
     }
 
     @Test
     public void testSearchOnYoutube() {
-        boolean isCodecoolFoundOnYoutube = false;
+        boolean isCodecoolOnYoutube = false;
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("codecool");
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
 
-        List<WebElement> allElements = webDriver.findElements(By.xpath("//*[@id=\"contents\"]/ytd-item-section-renderer[4]"));
+        List<WebElement> allElements = webDriver.findElements(By.xpath("//*[@id=\"dismissible\"]"));
         for (WebElement allElement : allElements) {
             if (allElement.getText().contains("codecool")) {
-                isCodecoolFoundOnYoutube = true;
+                isCodecoolOnYoutube = true;
             }
         }
-        assertTrue(isCodecoolFoundOnYoutube);
+        assertTrue(isCodecoolOnYoutube);
     }
 
+    @Test
 
-    @RepeatedTest(3)
-    public void testSearchOnYoutubeWithSearchHistory() {
+    public void testFindVideoFromSearchHistory() {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Rúzsa Magdi Nyár van");
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
 
-        // webDriver.navigate().to("https://youtube.com");
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.CONTROL + "a");
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.DELETE);
-        // getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.F5);
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"container\"]"))).click();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"sbse0\"]/div[1]"))).click();
+
+
+
+
+
+    }
+
+
+    @RepeatedTest(3)
+    public void testYouTubeRemoveFromSearchHistory() {
+        testLoginYouTube();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Rúzsa Magdi Nyár van");
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
+
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.CONTROL + "a");
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.DELETE);
+
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"container\"]"))).click();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Eltávolítás']"))).click();
 
     }
-
+    /*
     @AfterEach
     public void tearDown() {
         webDriver.quit();
     }
-
+     */
 
 }
 

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,7 +21,9 @@ public class YoutubeTesting {
     }
 
     private By searchField = By.id("search");
-    private By stopButton = By.xpath("//*[@id=\"movie_player\"]/div[29]/div[2]/div[1]/button");
+    private By stopButton = By.id("movie_player");
+    private By wideScreenButton = new By.ByCssSelector(".ytp-size-button.ytp-button");
+    private By fullScreenButton = new By.ByCssSelector(".ytp-fullscreen-button.ytp-button");
 
     @BeforeAll
     static void setDriverProperty() {
@@ -50,7 +51,7 @@ public class YoutubeTesting {
 
     }
     @Test
-    public void testVideoPlayer() {
+    public void testStopPlayButton() {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
 
@@ -61,8 +62,19 @@ public class YoutubeTesting {
             webDriver.findElement(stopButton).click();
         }
 
-
     }
+    @Test
+    public void testSizeButton() {
+        testLoginYouTube();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
 
+        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
+
+        for (int i = 0; i < 10; i++) {
+            webDriver.findElement(wideScreenButton).click();
+
+        }
+        webDriver.findElement(fullScreenButton).click();
+    }
 
 }

@@ -16,10 +16,13 @@ public class YoutubeTesting {
     private By usernameField = By.id("identifierId");
     private By passwordField = By.xpath("//*[@id=\"password\"]/div[1]/div/div[1]/input");
 
+
     private WebDriverWait getWebDriverWait() {
         return new WebDriverWait(webDriver, 10);
     }
 
+    private By searchField = By.id("search");
+    private By stopButton = By.xpath("//*[@id=\"movie_player\"]/div[29]/div[2]/div[1]/button");
 
     @BeforeAll
     static void setDriverProperty() {
@@ -30,7 +33,6 @@ public class YoutubeTesting {
     public void setWebDriver() {
         webDriver = new ChromeDriver();
     }
-
 
     @Test
     public void testLoginYouTube() {
@@ -44,6 +46,20 @@ public class YoutubeTesting {
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123");
         webDriver.findElement(passwordField).sendKeys(Keys.ENTER);
+
+
+    }
+    @Test
+    public void testVideoPlayer() {
+        testLoginYouTube();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
+
+        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
+
+        for (int i = 0; i < 10; i++) {
+            webDriver.findElement(stopButton).click();
+            webDriver.findElement(stopButton).click();
+        }
 
 
     }

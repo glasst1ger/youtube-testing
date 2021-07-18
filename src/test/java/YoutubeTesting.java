@@ -33,11 +33,9 @@ public class YoutubeTesting {
     public void testLoginYouTube() {
         webDriver.get("https://youtube.com");
         webDriver.manage().window().maximize();
-
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((loginField))).click();
-        webDriver.findElement(usernameField).sendKeys("autiteszti");
+        webDriver.findElement(usernameField).sendKeys("autiteszti@gmail.com");
         webDriver.findElement(usernameField).sendKeys(Keys.ENTER);
-
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123");
         webDriver.findElement(passwordField).sendKeys(Keys.ENTER);

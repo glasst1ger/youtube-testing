@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,9 @@ public class YoutubeTesting {
     public void setWebDriver() {
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--disable-notifications");
-        //ops.addArguments("disable-infobars");
+        ops.addExtensions(new File("extension_1_36_2_0.crx"));
         webDriver = new ChromeDriver(ops);
 
-        //webDriver = new ChromeDriver();
     }
 
 
@@ -87,10 +87,6 @@ public class YoutubeTesting {
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"sbse0\"]/div[1]"))).click();
-
-
-
-
 
     }
 

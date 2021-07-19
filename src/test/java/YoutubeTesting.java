@@ -4,11 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class YoutubeTesting {
@@ -27,7 +29,8 @@ public class YoutubeTesting {
     private By stopButton = By.id("movie_player");
     private By wideScreenButton = new By.ByCssSelector(".ytp-size-button.ytp-button");
     private By fullScreenButton = new By.ByCssSelector(".ytp-fullscreen-button.ytp-button");
-    private By likeButton = By.id("top-level-buttons-computed");
+    private By likeButton = By.xpath("//*[@id=\"info-contents\"]//button[1]");
+    //private By dislikeButton = By.xpath("//*[@id=\"info-contents\"]//button[2]");
     private By settingButton = new By.ByCssSelector(".ytp-button.ytp-settings-button");
 
     @BeforeAll
@@ -60,7 +63,7 @@ public class YoutubeTesting {
     public void testStopPlayButton() {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
-        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
+        webDriver.get("https://www.youtube.com/watch?v=6uFPFsh2qFE");
 
         for (int i = 0; i < 9; i++) {
            // getWebDriverWait().until(ExpectedConditions.elementToBeClickable((stopButton))).click();
@@ -74,7 +77,7 @@ public class YoutubeTesting {
     public void testSizeButton() {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
-        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
+        webDriver.get("https://www.youtube.com/watch?v=6uFPFsh2qFE");
 
         for (int i = 0; i < 3; i++) {
             webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
@@ -83,21 +86,21 @@ public class YoutubeTesting {
         webDriver.findElement(fullScreenButton).click();
     }
     @Test
-    public void testLikeButton() {
+    public void testLikeDislikeButton() throws InterruptedException {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
-        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
-
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable((likeButton))).click();
+        webDriver.get("https://www.youtube.com/watch?v=6uFPFsh2qFE");
 
         webDriver.findElement(likeButton).click();
+        webDriver.findElement(likeButton).click();
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a"))).click();
 
     }
     @Test
     public void testVideoSettingButton() {
         testLoginYouTube();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((searchField))).click();
-        webDriver.get("https://www.youtube.com/watch?v=Nd31XiSGJLw");
+        webDriver.get("https://www.youtube.com/watch?v=6uFPFsh2qFE");
 
         webDriver.findElement(settingButton).click();
         getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='Kommentárok']"))).click();

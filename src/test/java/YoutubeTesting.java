@@ -9,9 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,9 +35,10 @@ public class YoutubeTesting {
     public void setWebDriver() {
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--disable-notifications");
+        ops.addArguments("--lang=hu");
+        //ops.setExperimentalOption("excludeSwitches", Collections.singletonList("disable-popup-blocking"));
         ops.addExtensions(new File("extension_1_36_2_0.crx"));
         webDriver = new ChromeDriver(ops);
-
     }
 
 
@@ -56,63 +55,92 @@ public class YoutubeTesting {
 
     }
 
-    @Test
+    @RepeatedTest(3)
     public void testSearchOnYoutube() {
-        boolean isCodecoolOnYoutube = false;
-        testLoginYouTube();
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("codecool");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
+        boolean isRuzsaMagdiBestSingerEverOnYoutube = false;
+        String ruzsaMagdolna = "Rúzsa Magdolna";
 
-        List<WebElement> allElements = webDriver.findElements(By.xpath("//*[@id=\"dismissible\"]"));
+        testLoginYouTube();
+        findVideo(ruzsaMagdolna);
+
+
+        List<WebElement> allElements = webDriver.findElements(By.id("contents"));
         for (WebElement allElement : allElements) {
-            if (allElement.getText().contains("codecool")) {
-                isCodecoolOnYoutube = true;
+            if (allElement.getText().contains(ruzsaMagdolna)) {
+                isRuzsaMagdiBestSingerEverOnYoutube = true;
             }
         }
-        assertTrue(isCodecoolOnYoutube);
+        assertTrue(isRuzsaMagdiBestSingerEverOnYoutube);
     }
 
     @Test
-
     public void testFindVideoFromSearchHistory() {
         testLoginYouTube();
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Rúzsa Magdi Nyár van");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
 
-
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.CONTROL + "a");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.DELETE);
+        String[] favouriteMagdolnaRuzsaSongs = {"Rúzsa Magdi Április", "Rúzsa Magdi Jel", "Rúzsa Magdi Nyár van"};
+        for (String s : favouriteMagdolnaRuzsaSongs) {
+            findVideo(s);
+            clearSearchBar();
+        }
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"container\"]"))).click();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
-
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"sbse0\"]/div[1]"))).click();
 
     }
 
 
+
     @RepeatedTest(3)
     public void testYouTubeRemoveFromSearchHistory() {
         testLoginYouTube();
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Rúzsa Magdi Nyár van");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
 
 
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.CONTROL + "a");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.DELETE);
+        String[] favouriteMagdolnaRuzsaSongs = {"Rúzsa Magdi Április", "Rúzsa Magdi Jel", "Rúzsa Magdi Nyár van"};
+        for (String s : favouriteMagdolnaRuzsaSongs) {
+            findVideo(s);
+            clearSearchBar();
+        }
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"container\"]"))).click();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
-
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Eltávolítás']"))).click();
+    }
+
+    private void clearSearchBar() {
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.CONTROL + "a");
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(Keys.DELETE);
+    }
+
+    private void findVideo(String videoName) {
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys(videoName);
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
+    }
+
+    @Test
+    public void clickLikeOnYoutube() {
+        testLoginYouTube();
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Zámbó Jimmy - Még nem veszíthetek [ALPÁRI REMIX]");
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
+
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer[1]/div[1]/ytd-thumbnail/a/yt-img-shadow/img"))).click();
+        //getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]"))).click();
+
+
+        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a"))).click();
+
 
     }
-    /*
+
+
     @AfterEach
     public void tearDown() {
         webDriver.quit();
     }
-     */
+
 
 }
 

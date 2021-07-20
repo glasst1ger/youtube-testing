@@ -1,8 +1,5 @@
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,7 +33,6 @@ public class YoutubeTesting {
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--disable-notifications");
         ops.addArguments("--lang=hu");
-        //ops.setExperimentalOption("excludeSwitches", Collections.singletonList("disable-popup-blocking"));
         ops.addExtensions(new File("extension_1_36_2_0.crx"));
         webDriver = new ChromeDriver(ops);
     }
@@ -52,6 +48,7 @@ public class YoutubeTesting {
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable((passwordField))).click();
         webDriver.findElement(passwordField).sendKeys("Codecool123" + Keys.ENTER);
+
 
     }
 
@@ -82,19 +79,17 @@ public class YoutubeTesting {
             findVideo(s);
             clearSearchBar();
         }
-
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"container\"]"))).click();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).click();
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"sbse0\"]/div[1]"))).click();
 
-    }
 
+    }
 
 
     @RepeatedTest(3)
     public void testYouTubeRemoveFromSearchHistory() {
         testLoginYouTube();
-
 
         String[] favouriteMagdolnaRuzsaSongs = {"Rúzsa Magdi Április", "Rúzsa Magdi Jel", "Rúzsa Magdi Nyár van"};
         for (String s : favouriteMagdolnaRuzsaSongs) {
@@ -117,20 +112,25 @@ public class YoutubeTesting {
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
     }
 
+    /*
     @Test
     public void clickLikeOnYoutube() {
         testLoginYouTube();
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search"))).sendKeys("Zámbó Jimmy - Még nem veszíthetek [ALPÁRI REMIX]");
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.id("search-icon-legacy"))).click();
+        findVideo("Rúzsa Magdi Jel");
 
 
         getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer[1]/div[1]/ytd-thumbnail/a/yt-img-shadow/img"))).click();
-        //getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]"))).click();
+        
+        //
+        // LIKE
+        // getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]"))).click();
 
 
-        getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a"))).click();
+        //
+        //DISLIKE
+        // getWebDriverWait().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a"))).click();
 
 
     }
@@ -141,6 +141,8 @@ public class YoutubeTesting {
         webDriver.quit();
     }
 
+
+     */
 
 }
 
